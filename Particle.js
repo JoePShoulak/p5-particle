@@ -1,3 +1,5 @@
+const getValue = (obj) => (typeof obj === "function" ? obj() : obj);
+
 class Particle {
   static forces = [];
   static default = {};
@@ -12,16 +14,16 @@ class Particle {
       startingVelocity,
     } = Particle.default
   ) {
-    this.pos = positionVector ?? createVector();
-    this.vel = startingVelocity ?? createVector();
+    this.pos = positionVector ? getValue(positionVector) : createVector();
+    this.vel = startingVelocity ? getValue(startingVelocity) : createVector();
     this.acc = createVector();
 
     this.forces = [];
 
-    this.mass = mass;
-    this.size = size;
-    this.accLimit = accelerationLimit;
-    this.velLimit = speedLimit;
+    this.mass = getValue(mass);
+    this.size = getValue(size);
+    this.accLimit = getValue(accelerationLimit);
+    this.velLimit = getValue(speedLimit);
   }
 
   get allForces() {
