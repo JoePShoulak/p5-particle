@@ -6,7 +6,7 @@ class Particle {
     positionVector,
     { mass, accelerationLimit, speedLimit } = Particle.default
   ) {
-    this.pos = positionVector;
+    this.pos = positionVector ?? createVector();
     this.vel = createVector();
     this.acc = createVector();
 
@@ -19,6 +19,10 @@ class Particle {
 
   get allForces() {
     return [...Particle.forces, ...this.forces];
+  }
+
+  get heading() {
+    return this.vel.heading();
   }
 
   applyForce(forceVector) {
