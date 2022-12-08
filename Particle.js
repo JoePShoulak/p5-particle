@@ -1,5 +1,5 @@
 class Particle {
-  static globalForces = [];
+  static forces = [];
   static default = {};
 
   constructor(
@@ -10,20 +10,26 @@ class Particle {
     this.vel = createVector();
     this.acc = createVector();
 
+    this.forces = [];
+
     this.mass = mass;
     this.accLimit = accelerationLimit;
     this.velLimit = speedLimit;
   }
 
+  get allForces() {
+    return [...Particle.forces, ...this.forces];
+  }
+
   applyForce(forceVector) {
+    if (typeof forceVector === "function") forceVector = forceVector(this);
     if (this.mass) forceVector.div(this.mass);
+
     this.acc.add(forceVector);
   }
 
   update(cb = () => {}) {
-    Particle.globalForces.forEach((f) =>
-      this.applyForce(typeof f === "function" ? f(this) : f)
-    );
+    this.allForces.forEach((f) => this.applyForce(f));
 
     if (this.accLimit) this.acc.limit(this.accLimit);
     this.vel.add(this.acc);
