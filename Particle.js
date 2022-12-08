@@ -4,15 +4,22 @@ class Particle {
 
   constructor(
     positionVector,
-    { mass, accelerationLimit, speedLimit } = Particle.default
+    {
+      mass,
+      size,
+      accelerationLimit,
+      speedLimit,
+      startingVelocity,
+    } = Particle.default
   ) {
     this.pos = positionVector ?? createVector();
-    this.vel = createVector();
+    this.vel = startingVelocity ?? createVector();
     this.acc = createVector();
 
     this.forces = [];
 
     this.mass = mass;
+    this.size = size;
     this.accLimit = accelerationLimit;
     this.velLimit = speedLimit;
   }
